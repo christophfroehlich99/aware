@@ -3,7 +3,7 @@ const app = express();
 import dotenv from "dotenv";
 dotenv.config();
 import "express-async-errors";
-
+import morgan from "morgan";
 // db and authentiocate User
 import connectDB from "./db/connect.js";
 
@@ -14,12 +14,14 @@ import ticketRouter from "./routes/ticketRoutes.js";
 //Middleware
 import notFoundMiddleware from "./middleware/not-found.js";
 import errorHandlerMiddleware from "./middleware/error-handler.js";
-
+if (process.env.NODE_ENV !== "production") {
+  app.use(morgan("dev"));
+}
 app.use(express.json());
 
 //Routes
 app.get("/", (req, res) => {
-  res.send("Welcome!");
+  res.json({ msg: "Welcome!" });
 });
 
 app.use("/api/v1/auth", authRouter);

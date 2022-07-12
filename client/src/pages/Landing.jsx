@@ -1,6 +1,8 @@
 import LandingImg from "../assets/images/landing-image.svg";
 import { Logo } from "../components";
 import Wrapper from "../assets/wrappers/LandingPage";
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const Landing = () => {
   return (
@@ -20,9 +22,11 @@ const Landing = () => {
             work together in a collaborative, <span>productive</span>, and
             organized way.
           </p>
-          <button type="button" className="btn btn-hero">
-            Login/Register
-          </button>
+          <Link to="/register">
+            <button type="button" className="btn btn-hero">
+              Login/Register
+            </button>
+          </Link>
         </div>
         <img src={LandingImg} alt="team" className="img main-img" />
       </div>

@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Logo, FormRow, Alert } from "../components";
 import Wrapper from "../assets/wrappers/RegisterPage";
 import { useAppContext } from "../context/appContext";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [credentials, setCredentials] = useState({
@@ -11,8 +13,9 @@ const Register = () => {
     isMember: false,
   });
 
-  const { showAlert, isLoading, displayAlert } = useAppContext();
-
+  const { showAlert, isLoading, displayAlert, registerUser, user } =
+    useAppContext();
+  const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setCredentials((prevCredentials) => ({
@@ -28,9 +31,21 @@ const Register = () => {
       displayAlert();
       return;
     }
-    console.log(credentials);
+    if (isMember) {
+      console.log("already a member");
+    } else {
+      const currentUser = { name, email, password };
+      registerUser(currentUser);
+    }
   };
 
+  useEffect(() => {
+    if (user) {
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
+    }
+  }, [user, navigate]);
   const toggleIsMember = () => {
     setCredentials((prevCredentials) => ({
       ...prevCredentials,
@@ -69,7 +84,7 @@ const Register = () => {
           disabled={isLoading}
           onClick={onSubmit}
         >
-          Register
+          Submit
         </button>
         <p>
           {credentials.isMember ? "Not a member yet ? " : "Already a Member ?"}

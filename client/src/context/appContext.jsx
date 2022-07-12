@@ -1,12 +1,24 @@
 import React, { useState, useReducer, useContext } from "react";
 import reducer from "./reducer";
-import { DISPLAY_ALERT, CLEAR_ALERT } from "./actions";
+import axios from "axios";
+import {
+  DISPLAY_ALERT,
+  CLEAR_ALERT,
+  REGISTER_USER_BEGIN,
+  REGISTER_USER_SUCCESS,
+  REGISTER_USER_ERROR,
+} from "./actions";
+
+const token = localStorage.getItem("token");
+const user = localStorage.getItem("user");
 
 export const initialState = {
   isLoading: false,
   showAlert: false,
   alertText: "",
   alertType: "",
+  user: user ? JSON.parse(user) : null,
+  token: token,
 };
 
 const AppContext = React.createContext();
@@ -15,13 +27,40 @@ const AppProvider = ({ children }) => {
 
   const displayAlert = () => {
     dispatch({ type: DISPLAY_ALERT });
-    setTimeout(() => {
-      clearAlert();
-    }, 3000);
+    clearAlert();
   };
 
   const clearAlert = () => {
-    dispatch({ type: CLEAR_ALERT });
+    setTimeout(() => {
+      dispatch({ type: CLEAR_ALERT });
+    }, 3000);
+  };
+
+  const addUserToLocalStorage = (token, user) => {
+    localStorage.setItem("token", token);
+    localStorage.setItem("user", JSON.stringify(user));
+  };
+
+  const removeUserFromLocalStorage = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+  };
+  const registerUser = async (currentUser) => {
+    dispatch({ type: REGISTER_USER_BEGIN });
+    try {
+      const response = await axios.post("/api/v1/auth/register", currentUser);
+      //console.log(response);
+      const { user, token } = response.data;
+      dispatch({ type: REGISTER_USER_SUCCESS, payload: { user, token } });
+      addUserToLocalStorage(token, user);
+    } catch (error) {
+      //console.log(error.response);
+      dispatch({
+        type: REGISTER_USER_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert();
   };
 
   return (
@@ -29,6 +68,7 @@ const AppProvider = ({ children }) => {
       value={{
         ...state,
         displayAlert,
+        registerUser,
       }}
     >
       {children}
