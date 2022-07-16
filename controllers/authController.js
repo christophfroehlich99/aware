@@ -1,6 +1,10 @@
 import User from "../models/User.js";
 import { StatusCodes } from "http-status-codes";
-import { BadRequestError, NotFoundError } from "../errors/index.js";
+import {
+  BadRequestError,
+  NotFoundError,
+  UnauthorizedError,
+} from "../errors/index.js";
 
 const register = async (req, res) => {
   const { email, name, password } = req.body;
@@ -13,21 +17,35 @@ const register = async (req, res) => {
   }
   const user = await User.create({ email, name, password });
   const token = user.createJWT();
-  res
-    .status(StatusCodes.CREATED)
-    .json({
-      user: {
-        email: user.email,
-        lastName: user.lastName,
-        name: user.name,
-        role: user.role,
-      },
-      token,
-    });
+  res.status(StatusCodes.CREATED).json({
+    user: {
+      email: user.email,
+      lastName: user.lastName,
+      name: user.name,
+      role: user.role,
+    },
+    token,
+  });
 };
+
 const login = async (req, res) => {
-  res.send("login successfull!");
+  const { email, password } = req.body;
+  if (!email || !password) {
+    throw new BadRequestError("Please provide all values");
+  }
+  const user = await User.findOne({ email }).select("+password");
+  if (!user) {
+    throw new UnauthorizedError("Invalid Credentials");
+  }
+  const isPasswordCorrect = await user.comparePassword(password);
+  if (!isPasswordCorrect) {
+    throw new UnauthorizedError("Invalid Credentials");
+  }
+  const token = user.createJWT();
+  user.password = undefined;
+  res.status(StatusCodes.OK).json({ user, token });
 };
+
 const updateUser = async (req, res) => {
   res.send("Updated user!");
 };

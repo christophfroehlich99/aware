@@ -13,7 +13,7 @@ const Register = () => {
     isMember: false,
   });
 
-  const { showAlert, isLoading, displayAlert, registerUser, user } =
+  const { showAlert, isLoading, displayAlert, registerUser, user, loginUser } =
     useAppContext();
   const navigate = useNavigate();
   const handleChange = (e) => {
@@ -31,10 +31,10 @@ const Register = () => {
       displayAlert();
       return;
     }
+    const currentUser = { name, email, password };
     if (isMember) {
-      console.log("already a member");
+      loginUser(currentUser);
     } else {
-      const currentUser = { name, email, password };
       registerUser(currentUser);
     }
   };
