@@ -10,6 +10,7 @@ import {
   TOGGLE_SIDEBAR,
   LOGOUT_USER,
 } from "./actions";
+import { initialState } from "./appContext";
 
 const reducer = (state, action) => {
   if (action.type === DISPLAY_ALERT) {
@@ -88,7 +89,7 @@ const reducer = (state, action) => {
   }
   if (action.type === LOGOUT_USER) {
     return {
-      ...state,
+      ...initialState,
       user: null,
       token: null,
     };

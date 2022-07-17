@@ -8,7 +8,7 @@ const updateTicket = async (req, res) => {
   res.send("Ticket updated");
 };
 const getAllTickets = async (req, res) => {
-  res.send("All Tickets");
+  res.send("all tickets");
 };
 const showStats = async (req, res) => {
   res.send("stats");

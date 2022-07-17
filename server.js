@@ -14,6 +14,8 @@ import ticketRouter from "./routes/ticketRoutes.js";
 //Middleware
 import notFoundMiddleware from "./middleware/not-found.js";
 import errorHandlerMiddleware from "./middleware/error-handler.js";
+import authenticateUser from "./middleware/auth.js";
+
 if (process.env.NODE_ENV !== "production") {
   app.use(morgan("dev"));
 }
@@ -25,8 +27,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/projects", projectRouter);
-app.use("/api/v1/ticket", ticketRouter);
+app.use("/api/v1/projects", authenticateUser, projectRouter);
+app.use("/api/v1/ticket", authenticateUser, ticketRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
