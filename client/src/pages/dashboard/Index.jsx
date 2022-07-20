@@ -6,6 +6,7 @@ import Roles from "./Roles";
 import SharedLayout from "./SharedLayout";
 import Statistics from "./Statistics";
 import ProtectedRoute from "./ProtectedRoute";
+import NewProject from "./NewProject";
 
 export {
   AllTickets,
@@ -16,4 +17,5 @@ export {
   SharedLayout,
   Statistics,
   ProtectedRoute,
+  NewProject,
 };

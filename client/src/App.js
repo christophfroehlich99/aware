@@ -9,6 +9,7 @@ import {
   SharedLayout,
   Statistics,
   ProtectedRoute,
+  NewProject,
 } from "./pages/dashboard";
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         >
           <Route index element={<Statistics />} />
           <Route path="roles" element={<Roles />} />
+          <Route path="new-project" element={<NewProject />} />
           <Route path="projects" element={<Projects />} />
           <Route path="all-tickets" element={<AllTickets />} />
           <Route path="new-ticket" element={<NewTicket />} />

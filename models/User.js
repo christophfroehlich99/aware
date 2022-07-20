@@ -33,9 +33,17 @@ const UserSchema = new mongoose.Schema({
     minlength: 6,
     select: false,
   },
+  tickets: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: "Ticket",
+      unique: true,
+    },
+  ],
   role: {
     type: String,
     default: "unauthorized",
+    enum: ["unauthorized", "developer", "project-Manager", "admin"],
   },
 });
 
