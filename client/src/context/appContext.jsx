@@ -28,13 +28,17 @@ export const initialState = {
   user: user ? JSON.parse(user) : null,
   token: token,
   showSidebar: false,
+  isEditing: false,
+  editId: "",
   projectName: "",
   projectDescription: "",
   projectTeamOptions: [],
+  projectTeam: "",
   ticketTitle: "",
   ticketDescription: "",
   ticketProject: [],
   ticketTeamOptions: [],
+  ticketTeam: "",
   ticketTypeOptions: ["Errors", "Feature Requests", "Other"],
   ticketType: "Errors",
   ticketStatusOptions: [
@@ -45,7 +49,7 @@ export const initialState = {
   ],
   ticketStatus: "open",
   ticketPriorityOptions: ["low", "medium", "high", "urgent"],
-  ticketPriorityOpions: "low",
+  ticketPriority: "low",
 };
 
 const AppContext = React.createContext();
